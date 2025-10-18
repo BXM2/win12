@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>示例页面 · Modern HTML Starter</title>
+    <meta name="description" content="一个简洁、现代、响应式的 HTML 起始模板。" />
+    <meta name="theme-color" content="#0ea5e9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="icon/logo.svg" type="image/svg+xml" />
+    <link rel="manifest" href="pwa/manifest.json" />
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --text: #0f172a;
+        --muted: #475569;
+        --brand: #0ea5e9;
+        --brand-ink: #ffffff;
+        --surface: #ffffff;
+        --surface-2: #f1f5f9;
+        --ring: rgba(14, 165, 233, 0.35);
+        --shadow: 0 10px 30px rgba(2, 6, 23, 0.08);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0b1220;
+          --text: #e2e8f0;
+          --muted: #94a3b8;
+          --brand: #38bdf8;
+          --brand-ink: #0b1220;
+          --surface: #0f172a;
+          --surface-2: #111827;
+          --ring: rgba(56, 189, 248, 0.3);
+          --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+      }
+
+      /* Layout */
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        color: var(--text);
+        background: var(--bg) url("bg.svg") center/cover fixed no-repeat;
+        font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      @media (prefers-color-scheme: dark) {
+        body { background-image: url("bg-dark.svg"); }
+      }
+
+      .container {
+        width: min(1100px, 92%);
+        margin-inline: auto;
+      }
+
+      .skip-link {
+        position: absolute; left: -999px; top: 0; z-index: 1000;
+        background: var(--brand); color: var(--brand-ink);
+        padding: 10px 14px; border-radius: 8px; box-shadow: var(--shadow);
+      }
+      .skip-link:focus { left: 16px; outline: none; }
+
+      /* Header */
+      .site-header {
+        position: sticky; top: 0; z-index: 10;
+        backdrop-filter: saturate(140%) blur(8px);
+        background: color-mix(in oklab, var(--surface), transparent 25%);
+        border-bottom: 1px solid color-mix(in oklab, var(--text), transparent 90%);
+      }
+      .header-inner {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 0;
+      }
+      .brand { display: inline-flex; align-items: center; gap: 10px; }
+      .brand-logo { width: 28px; height: 28px; }
+      .brand-name { font-size: 18px; font-weight: 700; letter-spacing: 0.3px; }
+
+      .nav { display: flex; align-items: center; gap: 20px; }
+      .nav-list { display: flex; list-style: none; gap: 14px; padding: 0; margin: 0; }
+      .nav-list a {
+        display: inline-block; padding: 8px 10px; border-radius: 8px;
+        color: var(--muted); text-decoration: none;
+      }
+      .nav-list a[aria-current="page"], .nav-list a:hover {
+        color: var(--text); background: var(--surface-2);
+      }
+      .nav-toggle { display: none; }
+      @media (max-width: 720px) {
+        .nav-toggle { display: inline-flex; border: 0; background: transparent; padding: 8px; border-radius: 8px; }
+        .nav-toggle:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+        .nav-toggle-bar { width: 20px; height: 2px; background: var(--text); box-shadow: 0 6px 0 var(--text), 0 -6px 0 var(--text); }
+        .nav-list { position: absolute; right: 4%; top: 58px; flex-direction: column; gap: 8px; padding: 12px; border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); display: none; }
+        .nav-list.open { display: flex; }
+      }
+
+      /* Hero */
+      .hero { padding: 64px 0 28px; text-align: center; }
+      .hero h1 { font-size: clamp(28px, 3.3vw + 10px, 44px); margin: 0 0 12px; letter-spacing: -0.02em; }
+      .hero p { margin: 0 auto 22px; color: var(--muted); max-width: 720px; }
+      .hero-actions { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+      .btn { appearance: none; border: 1px solid transparent; padding: 10px 14px; border-radius: 12px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+      .btn-primary { background: var(--brand); color: var(--brand-ink); box-shadow: 0 10px 18px var(--ring); }
+      .btn-primary:hover { filter: saturate(110%); }
+      .btn-secondary { background: var(--surface-2); color: var(--text); border-color: color-mix(in oklab, var(--text), transparent 85%); }
+      .btn-outline { background: transparent; color: var(--text); border-color: color-mix(in oklab, var(--text), transparent 75%); }
+      .btn:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+
+      /* Sections */
+      section { padding: 26px 0; }
+      .features h2, .cta h2 { text-align: center; margin: 6px 0 22px; font-size: 22px; letter-spacing: 0.2px; }
+
+      .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+      .grid > article { grid-column: span 6; background: var(--surface); border: 1px solid color-mix(in oklab, var(--text), transparent 90%); border-radius: 14px; padding: 16px; box-shadow: var(--shadow); }
+      .grid > article h3 { margin-top: 4px; margin-bottom: 8px; font-size: 18px; }
+      .grid > article p { margin: 0; color: var(--muted); }
+      @media (min-width: 860px) { .grid > article { grid-column: span 3; } }
+
+      /* Footer */
+      .site-footer { border-top: 1px solid color-mix(in oklab, var(--text), transparent 90%); margin-top: 24px; }
+      .site-footer .container { padding: 18px 0 32px; }
+      .site-footer p { margin: 0; color: var(--muted); text-align: center; }
+
+      /* Utility */
+      .sr-only {
+        position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+
+    <header class="site-header" role="banner">
+      <div class="container header-inner">
+        <div class="brand">
+          <img src="icon/logo.svg" alt="" class="brand-logo" />
+          <span class="brand-name">我的网页</span>
+        </div>
+        <nav class="nav" aria-label="主导航">
+          <button class="nav-toggle" aria-expanded="false" aria-controls="nav-list">
+            <span class="nav-toggle-bar" aria-hidden="true"></span>
+            <span class="sr-only">打开菜单</span>
+          </button>
+          <ul class="nav-list" id="nav-list">
+            <li><a href="./index.html" aria-current="page">首页</a></li>
+            <li><a href="./mainpage.html">主页面</a></li>
+            <li><a href="./desktop.html">桌面</a></li>
+            <li><a href="./bios.html">BIOS</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" role="main">
+      <section class="hero container">
+        <h1>你好 👋，这是一个干净现代的 HTML 模板</h1>
+        <p>内置响应式布局、系统字体、暗色模式与可访问性细节，可直接用于快速起步。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="./desktop.html">打开桌面体验</a>
+          <a class="btn btn-secondary" href="./mainpage.html">查看主页面</a>
+        </div>
+      </section>
+
+      <section class="features container">
+        <h2>特性</h2>
+        <div class="grid">
+          <article>
+            <h3>响应式</h3>
+            <p>使用流式布局与断点，适配手机与桌面。</p>
+          </article>
+          <article>
+            <h3>暗色模式</h3>
+            <p>自动跟随系统偏好，暗夜更护眼。</p>
+          </article>
+          <article>
+            <h3>语义化</h3>
+            <p>采用语义 HTML 标签，利于可访问与 SEO。</p>
+          </article>
+          <article>
+            <h3>易拓展</h3>
+            <p>清晰样式与结构，便于自定义和扩展。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="cta container">
+        <h2>下一步</h2>
+        <p>你可以直接在这个模板上构建你的页面或应用。</p>
+        <div class="hero-actions">
+          <a class="btn btn-outline" href="./readme/README_zh_cn.md">阅读项目文档</a>
+          <a class="btn btn-outline" href="./reload.html">重载页面</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="container">
+        <p>© <span id="year"></span> 你的名称 · 由 HTML + CSS + JS 构建</p>
+      </div>
+    </footer>
+
+    <script>
+      // Update current year in the footer
+      const currentYearElement = document.getElementById('year');
+      if (currentYearElement) {
+        currentYearElement.textContent = String(new Date().getFullYear());
+      }
+
+      // Mobile navigation toggle
+      const navigationToggleButton = document.querySelector('.nav-toggle');
+      const navigationList = document.getElementById('nav-list');
+      function setNavigationExpandedState(isExpanded) {
+        if (!navigationToggleButton || !navigationList) return;
+        navigationToggleButton.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+        navigationList.classList.toggle('open', isExpanded);
+      }
+      navigationToggleButton?.addEventListener('click', function () {
+        const isCurrentlyExpanded = navigationToggleButton.getAttribute('aria-expanded') === 'true';
+        setNavigationExpandedState(!isCurrentlyExpanded);
+      });
+    </script>
+  </body>
+</html>
